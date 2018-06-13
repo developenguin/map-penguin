@@ -1,11 +1,12 @@
 import React from 'react';
+import { withScriptjs, withGoogleMap, GoogleMap, Marker } from 'react-google-maps';
 
-const MapContainer = () => {
+const MapContainer = withScriptjs(withGoogleMap((props) => {
 
   return (
-    <div className="map-container"/>
-  )
+    <GoogleMap defaultZoom={16} defaultCenter={{ lat: 43.3175083, lng: 11.3305885 }}/>
+  );
 
-};
+}));
 
 export default MapContainer;

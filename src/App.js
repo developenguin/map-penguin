@@ -8,10 +8,17 @@ class App extends Component {
 
   render() {
     return (
-      <div className="App">
+      <div className="app">
         <Header/>
-        <Sidebar/>
-        <MapContainer/>
+        <div className="row main-container">
+          <Sidebar />
+          <MapContainer
+            googleMapURL="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places"
+            loadingElement={<div style={{ height: '100%' }} />}
+            containerElement={<div className="map-container col pl-0" />}
+            mapElement={<div style={{ height: '100%' }} />}
+          />
+        </div>
       </div>
     );
   }
