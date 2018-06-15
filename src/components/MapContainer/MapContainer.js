@@ -4,7 +4,7 @@ import { withScriptjs, withGoogleMap, GoogleMap, Marker } from 'react-google-map
 const MapContainer = withScriptjs(withGoogleMap((props) => {
 
   return (
-    <GoogleMap defaultZoom={16} defaultCenter={{ lat: 43.3175083, lng: 11.3305885 }}/>
+    <GoogleMap clickableIcons={false} defaultZoom={16} defaultCenter={{ lat: 43.3175083, lng: 11.3305885 }}/>
   );
 
 }));
