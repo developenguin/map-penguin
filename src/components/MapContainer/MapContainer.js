@@ -9,7 +9,7 @@ const MapContainer = withScriptjs(withGoogleMap((props) => {
   };
 
   return (
-    <GoogleMap clickableIcons={false} options={options} defaultZoom={16} defaultCenter={{ lat: 43.3175083, lng: 11.3305885 }}>
+    <GoogleMap options={options} defaultZoom={16} defaultCenter={{ lat: 43.3175083, lng: 11.3305885 }}>
       {props.markers}
     </GoogleMap>
   );
