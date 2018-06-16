@@ -1,4 +1,7 @@
+/* @flow */
+
 import React, { Component } from 'react';
+import { Marker } from 'react-google-maps';
 import Header from './components/Header/Header';
 import MapContainer from './components/MapContainer/MapContainer';
 import Sidebar from './components/Sidebar/Sidebar';
@@ -6,7 +9,23 @@ import './App.css';
 
 class App extends Component {
 
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      markerData: [
+        { position: { lat: 43.3, lng: 11.3 } },
+        { position: { lat: 43.32, lng: 11.28 } }
+      ]
+    };
+  }
+
   render() {
+
+    const markers = this.state.markerData.map((data, idx) => {
+      return <Marker key={`marker_${idx}`} position={data.position} />;
+    });
+
     return (
       <div className="app">
         <Header/>
@@ -17,6 +36,7 @@ class App extends Component {
             loadingElement={<div style={{ height: '100%' }} />}
             containerElement={<div className="map-container col pl-0" />}
             mapElement={<div style={{ height: '100%' }} />}
+            markers={markers}
           />
         </div>
       </div>
