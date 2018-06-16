@@ -1,10 +1,15 @@
 import React from 'react';
 import { withScriptjs, withGoogleMap, GoogleMap } from 'react-google-maps';
+import mapStyles from './MapStyles';
 
 const MapContainer = withScriptjs(withGoogleMap((props) => {
 
+  const options = {
+    styles: mapStyles
+  };
+
   return (
-    <GoogleMap clickableIcons={false} defaultZoom={16} defaultCenter={{ lat: 43.3175083, lng: 11.3305885 }}>
+    <GoogleMap clickableIcons={false} options={options} defaultZoom={16} defaultCenter={{ lat: 43.3175083, lng: 11.3305885 }}>
       {props.markers}
     </GoogleMap>
   );
