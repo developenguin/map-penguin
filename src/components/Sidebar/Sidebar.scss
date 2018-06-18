@@ -1,4 +1,6 @@
+@import "../../assets/palette.scss";
+
 #sidebar {
-  background: #607d8b;
-  color: #fff;
+  background: $default-primary-color;
+  color: $text-primary-color;
 }

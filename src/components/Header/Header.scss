@@ -1,4 +1,6 @@
+@import "../../assets/palette.scss";
+
 header {
   height: 50px;
-  background: #455a64;
+  background: $dark-primary-color;
 }

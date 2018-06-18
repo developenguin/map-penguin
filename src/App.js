@@ -2,6 +2,7 @@
 
 import React, { Component } from 'react';
 import { Marker } from 'react-google-maps';
+import CitySearch from './components/CitySearch/CitySearch';
 import Header from './components/Header/Header';
 import MapContainer from './components/MapContainer/MapContainer';
 import Sidebar from './components/Sidebar/Sidebar';
@@ -30,6 +31,7 @@ class App extends Component {
     return (
       <div className="app">
         <Header/>
+        <CitySearch cityName="Siena" />
         <div className="row main-container">
           <Sidebar />
           <MapContainer
