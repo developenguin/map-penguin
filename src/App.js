@@ -6,21 +6,39 @@ import CitySearch from './components/CitySearch/CitySearch';
 import Header from './components/Header/Header';
 import MapContainer from './components/MapContainer/MapContainer';
 import Sidebar from './components/Sidebar/Sidebar';
-import { apiKey } from './services/GoogleClient';
+import { apiKey, GoogleMapsClient } from './services/GoogleClient';
 import './App.css';
 
 class App extends Component {
 
-  constructor(props) {
-    super(props);
+  state = {
+    markerData: [
+      { position: { lat: 43.3, lng: 11.3 } },
+      { position: { lat: 43.32, lng: 11.28 } }
+    ],
+    cityName: 'Amsterdam'
+  };
 
-    this.state = {
-      markerData: [
-        { position: { lat: 43.3, lng: 11.3 } },
-        { position: { lat: 43.32, lng: 11.28 } }
-      ]
-    };
+  async componentDidMount() {
+
+    const cityLatLong = await this.getCityLocation(this.state.cityName);
+
+    this.setState({
+      cityLatLong
+    });
+
   }
+
+  getCityLocation = (cityName: string) => {
+
+    return GoogleMapsClient.geocode({
+      address: cityName
+    }).asPromise()
+      .then(response => {
+        return response.json.results[0].geometry.location;
+      });
+
+  };
 
   render() {
 
@@ -31,7 +49,7 @@ class App extends Component {
     return (
       <div className="app">
         <Header/>
-        <CitySearch cityName="Siena" />
+        <CitySearch cityName={this.state.cityName} />
         <div className="row main-container">
           <Sidebar />
           <MapContainer
@@ -40,6 +58,7 @@ class App extends Component {
             containerElement={<div className="map-container col pl-0" />}
             mapElement={<div style={{ height: '100%' }} />}
             markers={markers}
+            cityLatLong={this.state.cityLatLong}
           />
         </div>
       </div>
