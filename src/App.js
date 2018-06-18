@@ -5,6 +5,7 @@ import { Marker } from 'react-google-maps';
 import Header from './components/Header/Header';
 import MapContainer from './components/MapContainer/MapContainer';
 import Sidebar from './components/Sidebar/Sidebar';
+import { apiKey } from './services/GoogleClient';
 import './App.css';
 
 class App extends Component {
@@ -32,7 +33,7 @@ class App extends Component {
         <div className="row main-container">
           <Sidebar />
           <MapContainer
-            googleMapURL="https://maps.googleapis.com/maps/api/js?key=AIzaSyAMss-ib4bIIBFQg2__-IzT4ic_AVvKR4I&v=3.exp&libraries=geometry,drawing,places"
+            googleMapURL={`https://maps.googleapis.com/maps/api/js?key=${apiKey}&v=3.exp&libraries=geometry,drawing,places`}
             loadingElement={<div style={{ height: '100%' }} />}
             containerElement={<div className="map-container col pl-0" />}
             mapElement={<div style={{ height: '100%' }} />}
