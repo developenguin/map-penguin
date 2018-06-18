@@ -12,6 +12,7 @@
 
   "rules": {
     "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
+    "react/prop-types": [0],
     "array-bracket-spacing": ["error", "always"],
     "block-scoped-var": "warn",
     "brace-style": ["error", "1tbs"],
