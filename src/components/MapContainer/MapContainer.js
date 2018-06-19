@@ -1,19 +1,47 @@
-import React from 'react';
-import { withScriptjs, withGoogleMap, GoogleMap } from 'react-google-maps';
+import React, { Component } from 'react';
+import ReactDOM from 'react-dom';
 import mapStyles from './MapStyles';
 
-const MapContainer = withScriptjs(withGoogleMap((props) => {
+export default class MapContainer extends Component {
 
-  const options = {
-    styles: mapStyles
-  };
+  componentDidUpdate() {
+    this.loadMap();
+  }
 
-  return (
-    <GoogleMap options={options} defaultZoom={15} defaultCenter={props.cityLatLong}>
-      {props.markers}
-    </GoogleMap>
-  );
+  loadMap() {
 
-}));
+    if (this.props && this.props.google) {
 
-export default MapContainer;
+      const { google } = this.props,
+            maps = google.maps,
+
+            mapRef = this.refs.map,
+            node = ReactDOM.findDOMNode(mapRef),
+
+            mapConfig = Object.assign({}, {
+              center: this.props.center,
+              zoom: 14,
+              styles: mapStyles
+            });
+
+      this.map = new maps.Map(node, mapConfig);
+
+    }
+
+  }
+
+  render() {
+
+    const style = {
+      width: '100%',
+      minHeight: '500px'
+    };
+
+    return (
+      <div ref="map" style={style}>
+        loading map...
+      </div>
+    );
+
+  }
+}

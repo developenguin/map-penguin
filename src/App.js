@@ -6,7 +6,7 @@ import CitySearch from './components/CitySearch/CitySearch';
 import Header from './components/Header/Header';
 import MapContainer from './components/MapContainer/MapContainer';
 import Sidebar from './components/Sidebar/Sidebar';
-import { apiKey, GoogleMapsClient } from './services/GoogleClient';
+import { GoogleApiWrapper } from 'google-maps-react';
 import './App.css';
 
 class App extends Component {
@@ -33,26 +33,27 @@ class App extends Component {
 
   getCityLocation = (cityName: string) => {
 
-    return GoogleMapsClient.geocode({
-      address: cityName
-    }).asPromise()
-      .then(response => {
-        return response.json.results[0].geometry.location;
-      });
+    //return GoogleMapsClient.geocode({
+    //  address: cityName
+    //}).asPromise()
+    //  .then(response => {
+    //    return response.json.results[0].geometry.location;
+    //  });
 
   };
 
   getPlacesNearLatLong = (latLong: object) => {
 
-    return GoogleMapsClient.placesNearby({
-      type: 'poi',
-      language: 'en',
-      radius: 5000,
-      location: [latLong.lat, latLong.lng]
-    }).asPromise()
-      .then(response => {
-        return response.json.results;
-      })
+    //return GoogleMapsClient.placesNearby({
+    //  type: 'poi',
+    //  language: 'en',
+    //  radius: 5000,
+    //  location: [latLong.lat, latLong.lng]
+    //}).asPromise()
+    //  .then(response => {
+    //    return response.json.results;
+    //  })
+
   };
 
   render() {
@@ -68,12 +69,9 @@ class App extends Component {
         <div className="row main-container">
           <Sidebar />
           <MapContainer
-            googleMapURL={`https://maps.googleapis.com/maps/api/js?key=${apiKey}&v=3.exp&libraries=geometry,drawing,places`}
-            loadingElement={<div style={{ height: '100%' }} />}
-            containerElement={<div className="map-container col pl-0" />}
-            mapElement={<div style={{ height: '100%' }} />}
+            google={this.props.google}
             markers={markers}
-            cityLatLong={this.state.cityLatLong}
+            center={{ lat: 43.33, lng: 11.32}}
           />
         </div>
       </div>
@@ -82,4 +80,6 @@ class App extends Component {
 
 }
 
-export default App;
+export default GoogleApiWrapper({
+  apiKey: 'AIzaSyAMss-ib4bIIBFQg2__-IzT4ic_AVvKR4I'
+})(App);
