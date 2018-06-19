@@ -1,4 +1,5 @@
 // @flow
+/* global google */
 
 import React, { Component } from 'react';
 import { Marker } from 'react-google-maps';
@@ -21,11 +22,11 @@ class App extends Component {
 
   async componentDidMount() {
 
-    const cityLatLong = await this.getCityLocation(this.state.cityName),
-          places = await this.getPlacesNearLatLong(cityLatLong);
+    const location = await this.getCityLocation(this.state.cityName),
+          places = await this.getPlacesNearLatLong(location);
 
     this.setState({
-      cityLatLong,
+      cityLatLong: { lat: location.lat(), lng: location.lng() },
       places
     });
 
@@ -33,16 +34,28 @@ class App extends Component {
 
   getCityLocation = (cityName: string) => {
 
-    //return GoogleMapsClient.geocode({
-    //  address: cityName
-    //}).asPromise()
-    //  .then(response => {
-    //    return response.json.results[0].geometry.location;
-    //  });
+    const geocoder = new google.maps.Geocoder();
+
+    return new Promise((resolve, reject) => {
+
+      geocoder.geocode({
+        address: cityName
+      }, (results, status) => {
+
+        if (status === 'OK') {
+          resolve(results[0].geometry.location);
+        } else {
+          reject();
+        }
+
+      });
+
+    });
 
   };
 
   getPlacesNearLatLong = (latLong: object) => {
+    return null;
 
     //return GoogleMapsClient.placesNearby({
     //  type: 'poi',
@@ -71,7 +84,7 @@ class App extends Component {
           <MapContainer
             google={this.props.google}
             markers={markers}
-            center={{ lat: 43.33, lng: 11.32}}
+            center={this.state.cityLatLong}
           />
         </div>
       </div>
