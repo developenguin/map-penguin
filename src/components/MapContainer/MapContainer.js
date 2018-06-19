@@ -33,12 +33,11 @@ export default class MapContainer extends Component {
   render() {
 
     const style = {
-      width: '100%',
       minHeight: '500px'
     };
 
     return (
-      <div ref="map" style={style}>
+      <div ref="map" className="col-sm-12 col-md-9 col-xl-10" style={style}>
         loading map...
       </div>
     );
