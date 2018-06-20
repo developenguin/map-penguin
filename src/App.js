@@ -77,7 +77,7 @@ class App extends Component {
         <Header/>
         <CitySearch cityName={this.state.cityName} onSearchCity={this.onSearchCity}/>
         <div className="row main-container">
-          <Sidebar />
+          <Sidebar places={this.state.places} />
           <MapContainer
             google={this.props.google}
             places={this.state.places}
