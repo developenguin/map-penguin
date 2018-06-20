@@ -21,6 +21,11 @@ export default class MapContainer extends Component {
         })
     }
 
+    // Only set places if they are present
+    if (this.props.places) {
+      this.setMarkersOnMap();
+    }
+
   }
 
   loadMap() {
@@ -71,6 +76,23 @@ export default class MapContainer extends Component {
 
         }
 
+      });
+
+    });
+
+  };
+
+  setMarkersOnMap = () => {
+
+    this.props.places.forEach(place => {
+
+      const marker = new google.maps.Marker({
+        position: {
+          lat: place.geometry.location.lat(),
+          lng: place.geometry.location.lng()
+        },
+        name: place.name,
+        map: this.map
       });
 
     });

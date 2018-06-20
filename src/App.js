@@ -2,7 +2,6 @@
 /* global google */
 
 import React, { Component } from 'react';
-import { Marker } from 'react-google-maps';
 import CitySearch from './components/CitySearch/CitySearch';
 import Header from './components/Header/Header';
 import MapContainer from './components/MapContainer/MapContainer';
@@ -13,11 +12,9 @@ import './App.css';
 class App extends Component {
 
   state = {
-    markerData: [
-      { position: { lat: 43.3, lng: 11.3 } },
-      { position: { lat: 43.32, lng: 11.28 } }
-    ],
-    cityName: 'Amsterdam'
+    places: [],
+    cityName: 'Amsterdam',
+    cityLatLong: {}
   };
 
   async componentDidMount() {
@@ -58,10 +55,6 @@ class App extends Component {
 
   render() {
 
-    const markers = this.state.markerData.map((data, idx) => {
-      return <Marker key={`marker_${idx}`} position={data.position} />;
-    });
-
     return (
       <div className="app">
         <Header/>
@@ -70,7 +63,7 @@ class App extends Component {
           <Sidebar />
           <MapContainer
             google={this.props.google}
-            markers={markers}
+            places={this.state.places}
             center={this.state.cityLatLong}
             setPlaces={this.handleSetPlaces}
           />
