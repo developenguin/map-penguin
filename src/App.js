@@ -22,12 +22,10 @@ class App extends Component {
 
   async componentDidMount() {
 
-    const location = await this.getCityLocation(this.state.cityName),
-          places = await this.getPlacesNearLatLong(location);
+    const location = await this.getCityLocation(this.state.cityName);
 
     this.setState({
-      cityLatLong: { lat: location.lat(), lng: location.lng() },
-      places
+      cityLatLong: { lat: location.lat(), lng: location.lng() }
     });
 
   }
@@ -54,19 +52,8 @@ class App extends Component {
 
   };
 
-  getPlacesNearLatLong = (latLong: object) => {
-    return null;
-
-    //return GoogleMapsClient.placesNearby({
-    //  type: 'poi',
-    //  language: 'en',
-    //  radius: 5000,
-    //  location: [latLong.lat, latLong.lng]
-    //}).asPromise()
-    //  .then(response => {
-    //    return response.json.results;
-    //  })
-
+  handleSetPlaces = (places) => {
+    this.setState({ places });
   };
 
   render() {
@@ -85,6 +72,7 @@ class App extends Component {
             google={this.props.google}
             markers={markers}
             center={this.state.cityLatLong}
+            setPlaces={this.handleSetPlaces}
           />
         </div>
       </div>
