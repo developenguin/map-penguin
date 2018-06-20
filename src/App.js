@@ -17,8 +17,19 @@ class App extends Component {
     cityLatLong: {}
   };
 
-  async componentDidMount() {
+  componentDidMount() {
+    this.loadMap();
+  }
 
+  componentDidUpdate(prevProps, prevState) {
+
+    if (this.state.cityName !== prevState.cityName) {
+      this.loadMap();
+    }
+
+  }
+
+  async loadMap() {
     const location = await this.getCityLocation(this.state.cityName);
 
     this.setState({
@@ -49,6 +60,12 @@ class App extends Component {
 
   };
 
+  onSearchCity = city => {
+    this.setState({
+      cityName: city
+    });
+  };
+
   handleSetPlaces = (places) => {
     this.setState({ places });
   };
@@ -58,7 +75,7 @@ class App extends Component {
     return (
       <div className="app">
         <Header/>
-        <CitySearch cityName={this.state.cityName} />
+        <CitySearch cityName={this.state.cityName} onSearchCity={this.onSearchCity}/>
         <div className="row main-container">
           <Sidebar />
           <MapContainer
