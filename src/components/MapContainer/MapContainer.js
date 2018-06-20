@@ -58,7 +58,8 @@ export default class MapContainer extends Component {
 
       service.nearbySearch({
         location: latLong,
-        radius: 5000
+        radius: 5000,
+        type: 'park'
       }, (results, status) => {
 
         const ServiceStatus = google.maps.places.PlacesServiceStatus;
