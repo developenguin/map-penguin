@@ -1,0 +1,11 @@
+@import "../../../assets/palette.scss";
+
+.place-item {
+  border-bottom: 1px solid $divider-color;
+  cursor: pointer;
+
+  &:hover {
+    border-bottom: none;
+    background-color: darken($default-primary-color, 5%);
+  }
+}
