@@ -85,18 +85,26 @@ export default class MapContainer extends Component {
 
   setMarkersOnMap = () => {
 
+    const bounds = new google.maps.LatLngBounds();
+
     this.props.places.forEach(place => {
 
+      const position = {
+        lat: place.geometry.location.lat(),
+        lng: place.geometry.location.lng()
+      };
+
       const marker = new google.maps.Marker({
-        position: {
-          lat: place.geometry.location.lat(),
-          lng: place.geometry.location.lng()
-        },
+        position,
         name: place.name,
         map: this.map
       });
 
+      bounds.extend(position);
+
     });
+
+    this.map.fitBounds(bounds);
 
   };
 
