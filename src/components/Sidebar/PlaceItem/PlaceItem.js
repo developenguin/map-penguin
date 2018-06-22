@@ -1,12 +1,16 @@
-import React from 'react';
+import React, { Component } from 'react';
 import './PlaceItem.css';
 
-const PlaceItem = props => {
+export default class PlaceItem extends Component {
 
-  return (
-    <div className="place-item px-1 py-2">{props.name}</div>
-  );
+  onClick = () => {
+    this.props.onClick(this.props.place);
+  };
+
+  render() {
+    return (
+      <div className="place-item px-1 py-2" onClick={this.onClick}>{this.props.place.name}</div>
+    );
+  }
 
 };
-
-export default PlaceItem;

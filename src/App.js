@@ -80,6 +80,32 @@ class App extends Component {
   };
 
   /**
+   * Event handler for when the user clicks a sidebar item
+   * Sets the corresponding place to clicked
+   * @param item
+   */
+  onClickSidebarItem = item => {
+
+    const otherPlaces = this.state.places
+          .filter(place => {
+            return place.id !== item.id;
+          })
+          .map(place => {
+            place.isActive = false;
+            return place;
+          }),
+          clickedPlace = {
+            ...item,
+            isActive: true
+          };
+
+    this.setState({
+      places: [clickedPlace, ...otherPlaces]
+    });
+
+  };
+
+  /**
    * Event handler for setting found places into the state
    * @param places
    */
@@ -110,7 +136,7 @@ class App extends Component {
       const marker = new google.maps.Marker({
         position,
         name: place.name,
-        animation: place.animation,
+        animation: place.isActive ? google.maps.Animation.BOUNCE : null,
         map: null
       });
 
@@ -129,7 +155,7 @@ class App extends Component {
         <Header/>
         <CitySearch cityName={this.state.cityName} onSearchCity={this.onSearchCity}/>
         <div className="row main-container">
-          <Sidebar places={this.state.places} />
+          <Sidebar places={this.state.places} onClickItem={this.onClickSidebarItem} />
           <MapContainer
             google={this.props.google}
             markers={this.getMarkersFromPlaces(this.state.places)}

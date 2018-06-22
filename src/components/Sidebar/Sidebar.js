@@ -4,10 +4,14 @@ import './Sidebar.css';
 
 export default class Sidebar extends Component {
 
+  onClickItem = item => {
+    this.props.onClickItem(item);
+  };
+
   render() {
 
     const placesList = this.props.places.map(place => {
-      return <PlaceItem key={`place_${place.name}`} {...place} />;
+      return <PlaceItem key={`place_${place.name}`} place={place} onClick={this.onClickItem}/>;
     });
 
     return (
