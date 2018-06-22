@@ -7,12 +7,19 @@ export default class CitySearch extends Component {
     currentValue: this.props.cityName
   };
 
+  /**
+   * Event handler for input changes
+   * @param e
+   */
   onChangeInput = e => {
     this.setState({
       currentValue: e.target.value
     });
   };
 
+  /**
+   * Event handler for when the user presses the search button
+   */
   handleSearchRequest = () => {
     this.props.onSearchCity(this.state.currentValue);
   };

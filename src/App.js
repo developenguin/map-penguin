@@ -18,18 +18,22 @@ class App extends Component {
   };
 
   componentDidMount() {
-    this.loadMap();
+    this.setCityLocation();
   }
 
   componentDidUpdate(prevProps, prevState) {
 
     if (this.state.cityName !== prevState.cityName) {
-      this.loadMap();
+      this.setCityLocation();
     }
 
   }
 
-  async loadMap() {
+  /**
+   * Sets the current city location into the state
+   * @returns {Promise<void>}
+   */
+  async setCityLocation() {
     const location = await this.getCityLocation(this.state.cityName);
 
     this.setState({
@@ -38,6 +42,11 @@ class App extends Component {
 
   }
 
+  /**
+   * Gets the coordinates for a given city name by using Google's geocoder
+   * @param cityName
+   * @returns {Promise<any>}
+   */
   getCityLocation = (cityName: string) => {
 
     const geocoder = new google.maps.Geocoder();
@@ -60,14 +69,57 @@ class App extends Component {
 
   };
 
+  /**
+   * Event handler for searching a city
+   * @param city
+   */
   onSearchCity = city => {
     this.setState({
       cityName: city
     });
   };
 
+  /**
+   * Event handler for setting found places into the state
+   * @param places
+   */
   handleSetPlaces = (places) => {
-    this.setState({ places });
+
+    this.setState({
+      places
+    });
+
+  };
+
+  /**
+   * Convert an array of places into an array of Google Maps-compatible markers
+   * @param places
+   * @returns {Array}
+   */
+  getMarkersFromPlaces = (places: array) => {
+
+    const markers = [];
+
+    this.state.places.forEach(place => {
+
+      const position = {
+        lat: place.geometry.location.lat(),
+        lng: place.geometry.location.lng()
+      };
+
+      const marker = new google.maps.Marker({
+        position,
+        name: place.name,
+        animation: place.animation,
+        map: null
+      });
+
+      markers.push(marker);
+
+    });
+
+    return markers;
+
   };
 
   render() {
@@ -80,7 +132,7 @@ class App extends Component {
           <Sidebar places={this.state.places} />
           <MapContainer
             google={this.props.google}
-            places={this.state.places}
+            markers={this.getMarkersFromPlaces(this.state.places)}
             center={this.state.cityLatLong}
             setPlaces={this.handleSetPlaces}
           />
@@ -91,6 +143,9 @@ class App extends Component {
 
 }
 
+/**
+ * Wrap our main component into the GoogleApiWrapper so Maps methods are available
+ */
 export default GoogleApiWrapper({
   apiKey: 'AIzaSyAMss-ib4bIIBFQg2__-IzT4ic_AVvKR4I'
 })(App);

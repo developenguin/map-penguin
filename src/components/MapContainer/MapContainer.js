@@ -8,9 +8,12 @@ import mapStyles from './MapStyles';
 export default class MapContainer extends Component {
 
   componentDidUpdate(prevProps) {
+
     this.loadMap();
 
     // Only get places if the center of the map has changed
+    // (in practice, this only occurs when the city changes)
+
     if (this.props.center && prevProps.center !== this.props.center) {
       this.getPlacesNearLatLong(this.props.center)
         .then(places => {
@@ -18,17 +21,22 @@ export default class MapContainer extends Component {
         })
         .catch(error => {
           console.log(error);
-        })
+        });
     }
 
-    // Only set places if they are present
-    if (this.props.places) {
+    // Only set markers if they are present
+    if (this.props.markers) {
       this.setMarkersOnMap();
     }
 
   }
 
+  /**
+   * Create the Google Map to draw on
+   */
   loadMap() {
+
+    // If the google prop is available, create a map and set it.
 
     if (this.props && this.props.google) {
 
@@ -50,6 +58,11 @@ export default class MapContainer extends Component {
 
   }
 
+  /**
+   * Gets places near a lat/long object
+   * @param latLong
+   * @returns {Promise<any>}
+   */
   getPlacesNearLatLong = (latLong: object) => {
 
     const service = new google.maps.places.PlacesService(this.map);
@@ -83,25 +96,17 @@ export default class MapContainer extends Component {
 
   };
 
+  /**
+   * Get the markers from the props and put them on the map
+   * Also extend the map to fit all of the markers
+   */
   setMarkersOnMap = () => {
 
     const bounds = new google.maps.LatLngBounds();
 
-    this.props.places.forEach(place => {
-
-      const position = {
-        lat: place.geometry.location.lat(),
-        lng: place.geometry.location.lng()
-      };
-
-      const marker = new google.maps.Marker({
-        position,
-        name: place.name,
-        map: this.map
-      });
-
-      bounds.extend(position);
-
+    this.props.markers.forEach(marker => {
+      marker.setMap(this.map);
+      bounds.extend(marker.position);
     });
 
     this.map.fitBounds(bounds);
