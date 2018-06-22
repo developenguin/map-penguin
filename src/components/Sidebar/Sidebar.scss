@@ -3,5 +3,9 @@
 #sidebar {
   background: $default-primary-color;
   color: $text-primary-color;
-  overflow-y: scroll;
+
+  .places-container {
+    max-height: 756px;
+    overflow-y: scroll;
+  }
 }
