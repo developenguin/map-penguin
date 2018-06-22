@@ -105,6 +105,21 @@ class App extends Component {
 
   };
 
+  onFilterLocations = (value) => {
+
+    const filteredPlaces = this.state.places.map(place => {
+
+      place.isVisible = place.name.toLowerCase().includes(value.toLowerCase());
+      return place;
+
+    });
+
+    this.setState({
+      places: filteredPlaces
+    });
+
+  };
+
   /**
    * Event handler for setting found places into the state
    * @param places
@@ -127,6 +142,10 @@ class App extends Component {
     const markers = [];
 
     this.state.places.forEach(place => {
+
+      if (!place.isVisible) {
+        return;
+      }
 
       const position = {
         lat: place.geometry.location.lat(),
@@ -155,7 +174,11 @@ class App extends Component {
         <Header/>
         <CitySearch cityName={this.state.cityName} onSearchCity={this.onSearchCity}/>
         <div className="row main-container">
-          <Sidebar places={this.state.places} onClickItem={this.onClickSidebarItem} />
+          <Sidebar
+            places={this.state.places}
+            onClickItem={this.onClickSidebarItem}
+            onFilterLocations={this.onFilterLocations}
+          />
           <MapContainer
             google={this.props.google}
             markers={this.getMarkersFromPlaces(this.state.places)}

@@ -17,7 +17,14 @@ export default class MapContainer extends Component {
     if (this.props.center && prevProps.center !== this.props.center) {
       this.getPlacesNearLatLong(this.props.center)
         .then(places => {
-          this.props.setPlaces(places);
+
+          this.props.setPlaces(places.map(place => {
+
+            place.isVisible = true;
+            return place;
+
+          }));
+
         })
         .catch(error => {
           console.log(error);

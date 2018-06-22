@@ -9,12 +9,16 @@ export default class Sidebar extends Component {
   };
 
   onInputChange = e => {
-
+    this.props.onFilterLocations(e.target.value);
   };
 
   render() {
 
-    const placesList = this.props.places.map(place => {
+    const placesList = this.props.places
+      .filter(place => {
+        return place.isVisible;
+      })
+      .map(place => {
       return <PlaceItem key={`place_${place.name}`} place={place} onClick={this.onClickItem}/>;
     });
 
