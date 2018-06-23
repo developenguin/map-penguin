@@ -11,28 +11,8 @@ export default class MapContainer extends Component {
 
     this.loadMap();
 
-    // Only get places if the center of the map has changed
-    // (in practice, this only occurs when the city changes)
-
-    if (this.props.center && prevProps.center !== this.props.center) {
-      this.getPlacesNearLatLong(this.props.center)
-        .then(places => {
-
-          this.props.setPlaces(places.map(place => {
-
-            place.isVisible = true;
-            return place;
-
-          }));
-
-        })
-        .catch(error => {
-          console.log(error);
-        });
-    }
-
-    // Only set markers if they are present
-    if (this.props.markers) {
+    // Only set markers if places are passed down
+    if (this.props.places) {
       this.setMarkersOnMap();
     }
 
@@ -66,57 +46,55 @@ export default class MapContainer extends Component {
   }
 
   /**
-   * Gets places near a lat/long object
-   * @param latLong
-   * @returns {Promise<any>}
-   */
-  getPlacesNearLatLong = (latLong: object) => {
-
-    const service = new google.maps.places.PlacesService(this.map);
-
-    return new Promise((resolve, reject) => {
-
-      service.nearbySearch({
-        location: latLong,
-        radius: 5000,
-        type: 'park'
-      }, (results, status) => {
-
-        const ServiceStatus = google.maps.places.PlacesServiceStatus;
-
-        switch (status) {
-
-          case ServiceStatus.OK:
-            resolve(results);
-            break;
-          case ServiceStatus.ZERO_RESULTS:
-            resolve([]);
-            break;
-          default:
-            reject(status);
-
-        }
-
-      });
-
-    });
-
-  };
-
-  /**
    * Get the markers from the props and put them on the map
    * Also extend the map to fit all of the markers
    */
   setMarkersOnMap = () => {
 
-    const bounds = new google.maps.LatLngBounds();
+    const bounds = new google.maps.LatLngBounds(),
+          markers = this.getMarkersFromPlaces(this.props.places);
 
-    this.props.markers.forEach(marker => {
+    markers.forEach(marker => {
       marker.setMap(this.map);
       bounds.extend(marker.position);
     });
 
     this.map.fitBounds(bounds);
+
+  };
+
+  /**
+   * Convert an array of places into an array of Google Maps-compatible markers
+   * @param places
+   * @returns {Array}
+   */
+  getMarkersFromPlaces = (places: array) => {
+
+    const markers = [];
+
+    places.forEach(place => {
+
+      if (!place.isVisible) {
+        return;
+      }
+
+      const position = {
+        lat: place.location.lat,
+        lng: place.location.lng
+      };
+
+      const marker = new google.maps.Marker({
+        position,
+        name: place.name,
+        animation: place.isActive ? google.maps.Animation.BOUNCE : null,
+        map: null
+      });
+
+      markers.push(marker);
+
+    });
+
+    return markers;
 
   };
 

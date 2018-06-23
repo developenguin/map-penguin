@@ -8,6 +8,7 @@ import MapContainer from './components/MapContainer/MapContainer';
 import Sidebar from './components/Sidebar/Sidebar';
 import { GoogleApiWrapper } from 'google-maps-react';
 import './App.css';
+import FoursquareService from './services/FoursquareService';
 
 class App extends Component {
 
@@ -18,27 +19,97 @@ class App extends Component {
   };
 
   componentDidMount() {
-    this.setCityLocation();
+    this.getMapDataForCityName();
   }
 
-  componentDidUpdate(prevProps, prevState) {
+  componentDidUpdate(prevProps, prevState, snapshot) {
 
     if (this.state.cityName !== prevState.cityName) {
-      this.setCityLocation();
+      this.getMapDataForCityName();
     }
 
   }
 
   /**
-   * Sets the current city location into the state
-   * @returns {Promise<void>}
+   * Event handler for searching a city
+   * @param city
    */
-  async setCityLocation() {
-    const location = await this.getCityLocation(this.state.cityName);
+  onSearchCity = city => {
+    this.setState({
+      cityName: city
+    });
+  };
+
+  /**
+   * Event handler for when the user clicks a sidebar item
+   * Sets the corresponding place to clicked
+   * @param item
+   */
+  onClickSidebarItem = item => {
+
+    const otherPlaces = this.state.places
+      .filter(place => {
+        return place.id !== item.id;
+      })
+      .map(place => {
+        place.isActive = false;
+        return place;
+      }),
+      clickedPlace = {
+        ...item,
+        isActive: true
+      };
 
     this.setState({
-      cityLatLong: { lat: location.lat(), lng: location.lng() }
+      places: [clickedPlace, ...otherPlaces]
     });
+
+  };
+
+  /**
+   * Event handler for filtering locations from the sidebar
+   * @param value
+   */
+  onFilterLocations = (value) => {
+
+    const filteredPlaces = this.state.places.map(place => {
+
+      place.isVisible = place.name.toLowerCase().includes(value.toLowerCase());
+      return place;
+
+    });
+
+    this.setState({
+      places: filteredPlaces
+    });
+
+  };
+
+  /**
+   * Gets the data needed to create the markers
+   */
+  getMapDataForCityName() {
+
+    this.getCityLocation(this.state.cityName)
+      .then(latLong => {
+
+        this.setState({
+          cityLatLong: { lat: latLong.lat(), lng: latLong.lng() }
+        });
+
+        return this.getPlacesNearLatLong(latLong)
+
+      })
+      .then((places) => {
+
+        this.setState({
+          places: places.map(place => {
+            place.isVisible = true;
+            return place;
+          })
+        });
+
+      });
 
   }
 
@@ -70,100 +141,15 @@ class App extends Component {
   };
 
   /**
-   * Event handler for searching a city
-   * @param city
+   * Get places near the given location from Foursquare
+   * @param latLong
    */
-  onSearchCity = city => {
-    this.setState({
-      cityName: city
-    });
-  };
+  getPlacesNearLatLong = latLong => {
 
-  /**
-   * Event handler for when the user clicks a sidebar item
-   * Sets the corresponding place to clicked
-   * @param item
-   */
-  onClickSidebarItem = item => {
-
-    const otherPlaces = this.state.places
-          .filter(place => {
-            return place.id !== item.id;
-          })
-          .map(place => {
-            place.isActive = false;
-            return place;
-          }),
-          clickedPlace = {
-            ...item,
-            isActive: true
-          };
-
-    this.setState({
-      places: [clickedPlace, ...otherPlaces]
-    });
-
-  };
-
-  onFilterLocations = (value) => {
-
-    const filteredPlaces = this.state.places.map(place => {
-
-      place.isVisible = place.name.toLowerCase().includes(value.toLowerCase());
-      return place;
-
-    });
-
-    this.setState({
-      places: filteredPlaces
-    });
-
-  };
-
-  /**
-   * Event handler for setting found places into the state
-   * @param places
-   */
-  handleSetPlaces = (places) => {
-
-    this.setState({
-      places
-    });
-
-  };
-
-  /**
-   * Convert an array of places into an array of Google Maps-compatible markers
-   * @param places
-   * @returns {Array}
-   */
-  getMarkersFromPlaces = (places: array) => {
-
-    const markers = [];
-
-    this.state.places.forEach(place => {
-
-      if (!place.isVisible) {
-        return;
-      }
-
-      const position = {
-        lat: place.geometry.location.lat(),
-        lng: place.geometry.location.lng()
-      };
-
-      const marker = new google.maps.Marker({
-        position,
-        name: place.name,
-        animation: place.isActive ? google.maps.Animation.BOUNCE : null,
-        map: null
+    return FoursquareService.searchPlacesNearLocation({ lat: latLong.lat(), lng: latLong.lng() })
+      .then(data => {
+        return data.response.venues;
       });
-
-      markers.push(marker);
-
-    });
-
-    return markers;
 
   };
 
@@ -181,9 +167,8 @@ class App extends Component {
           />
           <MapContainer
             google={this.props.google}
-            markers={this.getMarkersFromPlaces(this.state.places)}
             center={this.state.cityLatLong}
-            setPlaces={this.handleSetPlaces}
+            places={this.state.places}
           />
         </div>
       </div>

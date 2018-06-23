@@ -19,7 +19,7 @@ export default class Sidebar extends Component {
         return place.isVisible;
       })
       .map(place => {
-      return <PlaceItem key={`place_${place.name}`} place={place} onClick={this.onClickItem}/>;
+      return <PlaceItem key={`place_${place.id}`} place={place} onClick={this.onClickItem}/>;
     });
 
     return (
