@@ -15,6 +15,11 @@ export default {
     FOOD: '4d4b7105d754a06374d81259'
   },
 
+  /**
+   * Search for places near a given lat/long pair, using the Foursquare API
+   * @param latLong
+   * @returns {Promise<Response>}
+   */
   searchPlacesNearLocation(latLong: object) {
 
     const url = this.parametrizeURL('venues/search', {
@@ -30,7 +35,13 @@ export default {
 
   },
 
-  parametrizeURL(endpoint, options) {
+  /**
+   * Build the URL for a given endpoint and set of query parameters
+   * @param endpoint
+   * @param options
+   * @returns {string}
+   */
+  parametrizeURL(endpoint: string, options: object) {
 
     let url = `${this.API_BASE_URL}${endpoint}?`;
 
@@ -49,6 +60,10 @@ export default {
 
   },
 
+  /**
+   * Return the categories as a comma-separated string
+   * @returns {string}
+   */
   enumerateCategories() {
     return Object.values(this.CATEGORIES).join(',');
   }

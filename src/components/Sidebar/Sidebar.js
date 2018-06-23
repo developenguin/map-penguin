@@ -4,10 +4,18 @@ import './Sidebar.css';
 
 export default class Sidebar extends Component {
 
+  /**
+   * Event handler for a click on an item
+   * @param item
+   */
   onClickItem = item => {
     this.props.onClickItem(item);
   };
 
+  /**
+   * Event handler for changing the value of the filter field
+   * @param e
+   */
   onInputChange = e => {
     this.props.onFilterLocations(e.target.value);
   };
