@@ -186,6 +186,7 @@ class App extends Component {
             center={this.state.cityLatLong}
             places={this.state.places}
             onClickMarker={this.onClickPlaceItem}
+            isPlaceActive={!!this.state.activePlace}
           />
         </div>
       </div>

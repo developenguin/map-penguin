@@ -108,8 +108,12 @@ export default class MapContainer extends Component {
       minHeight: '500px'
     };
 
+    const className = this.props.isPlaceActive
+      ? 'col-sm-12 col-md-8 col-lg-4 col-xl-5'
+      : 'col-sm-12 col-md-8 col-lg-9 col-xl-10';
+
     return (
-      <div ref="map" className="col-sm-12 col-md-8 col-lg-4 col-xl-5" style={style}>
+      <div ref="map" className={className} style={style}>
         loading map...
       </div>
     );
