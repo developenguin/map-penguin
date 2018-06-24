@@ -9,7 +9,7 @@ export default class PlaceItem extends Component {
 
   render() {
     return (
-      <div className="place-item p-2" onClick={this.onClick}>{this.props.place.name}</div>
+      <div className={`place-item p-2${this.props.place.isActive ? ' active': ''}`} onClick={this.onClick}>{this.props.place.name}</div>
     );
   }
 

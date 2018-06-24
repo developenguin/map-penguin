@@ -4,8 +4,7 @@
   border-bottom: 1px solid $divider-color;
   cursor: pointer;
 
-  &:hover {
-    border-bottom: none;
+  &:hover, &.active {
     background-color: darken($default-primary-color, 5%);
   }
 }
