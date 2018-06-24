@@ -109,7 +109,7 @@ export default class MapContainer extends Component {
     };
 
     return (
-      <div ref="map" className="col-sm-12 col-md-8 col-lg-9 col-xl-10" style={style}>
+      <div ref="map" className="col-sm-12 col-md-8 col-lg-4 col-xl-5" style={style}>
         loading map...
       </div>
     );

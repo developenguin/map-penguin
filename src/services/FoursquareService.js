@@ -16,6 +16,21 @@ export default {
   },
 
   /**
+   * Gets the details for a certain venue from the Foursquare API
+   * @param venueId
+   */
+  getDetailsForVenue(venueId: string) {
+
+    const url = this.parametrizeURL(`venues/${venueId}`);
+
+    return fetch(url)
+      .then(response => {
+        return response.json();
+      });
+
+  },
+
+  /**
    * Search for places near a given lat/long pair, using the Foursquare API
    * @param latLong
    * @returns {Promise<Response>}
@@ -41,7 +56,7 @@ export default {
    * @param options
    * @returns {string}
    */
-  parametrizeURL(endpoint: string, options: object) {
+  parametrizeURL(endpoint: string, options: object = {}) {
 
     let url = `${this.API_BASE_URL}${endpoint}?`;
 

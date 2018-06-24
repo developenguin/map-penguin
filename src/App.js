@@ -5,6 +5,7 @@ import React, { Component } from 'react';
 import CitySearch from './components/CitySearch/CitySearch';
 import Header from './components/Header/Header';
 import MapContainer from './components/MapContainer/MapContainer';
+import PlaceDetails from './components/PlaceDetails/PlaceDetails';
 import Sidebar from './components/Sidebar/Sidebar';
 import { GoogleApiWrapper } from 'google-maps-react';
 import './App.css';
@@ -13,6 +14,7 @@ import FoursquareService from './services/FoursquareService';
 class App extends Component {
 
   state = {
+    activePlace: null,
     places: [],
     cityName: 'Amsterdam',
     cityLatLong: {}
@@ -59,6 +61,13 @@ class App extends Component {
     this.setState({
       places
     });
+
+    this.getPlaceDetails(clickedPlace.id)
+      .then(place => {
+        this.setState({
+          activePlace: place
+        })
+      });
 
   };
 
@@ -139,12 +148,22 @@ class App extends Component {
   /**
    * Get places near the given location from Foursquare
    * @param latLong
+   * @returns {Promise<T>}
    */
   getPlacesNearLatLong = latLong => {
 
     return FoursquareService.searchPlacesNearLocation({ lat: latLong.lat(), lng: latLong.lng() })
       .then(data => {
         return data.response.venues;
+      });
+
+  };
+
+  getPlaceDetails = placeId => {
+
+    return FoursquareService.getDetailsForVenue(placeId)
+      .then(data => {
+        return data.response.venue;
       });
 
   };
@@ -161,6 +180,7 @@ class App extends Component {
             onClickItem={this.onClickPlaceItem}
             onFilterLocations={this.onFilterLocations}
           />
+          {this.state.activePlace && <PlaceDetails place={this.state.activePlace}/>}
           <MapContainer
             google={this.props.google}
             center={this.state.cityLatLong}
