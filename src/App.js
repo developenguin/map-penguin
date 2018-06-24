@@ -47,21 +47,17 @@ class App extends Component {
    */
   onClickSidebarItem = item => {
 
-    const otherPlaces = this.state.places
-      .filter(place => {
-        return place.id !== item.id;
-      })
+    const places = this.state.places
       .map(place => {
-        place.isActive = false;
+
+        place.isActive = place.id === item.id;
+
         return place;
-      }),
-      clickedPlace = {
-        ...item,
-        isActive: true
-      };
+
+      });
 
     this.setState({
-      places: [clickedPlace, ...otherPlaces]
+      places
     });
 
   };
