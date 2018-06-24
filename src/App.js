@@ -43,14 +43,14 @@ class App extends Component {
   /**
    * Event handler for when the user clicks a sidebar item
    * Sets the corresponding place to clicked
-   * @param item
+   * @param clickedPlace
    */
-  onClickSidebarItem = item => {
+  onClickPlaceItem = clickedPlace => {
 
     const places = this.state.places
       .map(place => {
 
-        place.isActive = place.id === item.id;
+        place.isActive = place.id === clickedPlace.id;
 
         return place;
 
@@ -158,13 +158,14 @@ class App extends Component {
         <div className="row main-container">
           <Sidebar
             places={this.state.places}
-            onClickItem={this.onClickSidebarItem}
+            onClickItem={this.onClickPlaceItem}
             onFilterLocations={this.onFilterLocations}
           />
           <MapContainer
             google={this.props.google}
             center={this.state.cityLatLong}
             places={this.state.places}
+            onClickMarker={this.onClickPlaceItem}
           />
         </div>
       </div>

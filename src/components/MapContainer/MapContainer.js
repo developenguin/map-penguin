@@ -90,6 +90,10 @@ export default class MapContainer extends Component {
         map: null
       });
 
+      marker.addListener('click', e => {
+        this.props.onClickMarker(place);
+      });
+
       markers.push(marker);
 
     });
