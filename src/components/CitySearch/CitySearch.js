@@ -29,8 +29,8 @@ export default class CitySearch extends Component {
       <div className="row city-search-row">
         <div className="col d-flex justify-content-center my-3">
           <h2 className="mx-3">Exploring</h2>
-          <input onChange={this.onChangeInput} className="px-3" type="text" id="city-input" defaultValue={this.props.cityName} />
-          <button onClick={this.handleSearchRequest}>Search!</button>
+          <input tabIndex="0" onChange={this.onChangeInput} className="px-3" type="text" id="city-input" defaultValue={this.props.cityName} />
+          <button tabIndex="0" onClick={this.handleSearchRequest}>Search!</button>
         </div>
       </div>
     );

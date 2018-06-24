@@ -3,6 +3,7 @@
 
 import React, { Component } from 'react';
 import CitySearch from './components/CitySearch/CitySearch';
+import Footer from './components/Footer/Footer';
 import Header from './components/Header/Header';
 import MapContainer from './components/MapContainer/MapContainer';
 import PlaceDetails from './components/PlaceDetails/PlaceDetails';
@@ -189,6 +190,7 @@ class App extends Component {
             isPlaceActive={!!this.state.activePlace}
           />
         </div>
+        <Footer/>
       </div>
     );
   }
