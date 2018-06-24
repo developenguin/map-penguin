@@ -109,7 +109,7 @@ export default class MapContainer extends Component {
     };
 
     const className = this.props.isPlaceActive
-      ? 'col-sm-12 col-md-8 col-lg-4 col-xl-5'
+      ? 'col-sm-12 col-lg-4 col-xl-5'
       : 'col-sm-12 col-md-8 col-lg-9 col-xl-10';
 
     return (

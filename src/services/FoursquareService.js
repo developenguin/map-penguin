@@ -76,6 +76,15 @@ export default {
   },
 
   /**
+   * Assembles the url for a venue photo
+   * @param photo
+   * @returns {string}
+   */
+  getPhotoUrlForPhoto(photo: object) {
+    return `${photo.prefix}width500${photo.suffix}`;
+  },
+
+  /**
    * Return the categories as a comma-separated string
    * @returns {string}
    */
