@@ -7,4 +7,8 @@
   &:hover, &.active {
     background-color: darken($default-primary-color, 5%);
   }
+
+  &:focus {
+    text-decoration: underline;
+  }
 }
