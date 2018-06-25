@@ -12,6 +12,8 @@ Make sure you have Yarn or NPM available on your system.
 Use ``yarn install && yarn start`` (or ``npm install && npm start``) to run the project from a local development server.
 Alternatively, you can use ``yarn build`` to generate a production build which you can serve from a (local) server.
 
+The production build will include a service worker which serves assets from a local cache. The development version will NOT have this service worker to allow for easier development.
+
 
 ## Dependencies
 This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).
