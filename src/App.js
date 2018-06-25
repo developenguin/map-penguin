@@ -4,7 +4,6 @@
 import React, { Component } from 'react';
 import CitySearch from './components/CitySearch/CitySearch';
 import Footer from './components/Footer/Footer';
-import Header from './components/Header/Header';
 import MapContainer from './components/MapContainer/MapContainer';
 import PlaceDetails from './components/PlaceDetails/PlaceDetails';
 import Sidebar from './components/Sidebar/Sidebar';
@@ -173,7 +172,6 @@ class App extends Component {
 
     return (
       <div className="app">
-        <Header/>
         <CitySearch cityName={this.state.cityName} onSearchCity={this.onSearchCity}/>
         <div className="row main-container">
           <Sidebar
